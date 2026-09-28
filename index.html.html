@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<meta name="theme-color" content="#0d1117">
+<title>คู่มือทหารใหม่ มทบ.43 | ฉบับสมบูรณ์</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0d12; --bg2:#0f141c; --card:#141b26; --card2:#1a2331;
+  --gold:#c9a227; --gold2:#f0d060; --olive:#4a5d3a; --olive2:#6b8250;
+  --txt:#e8eaed; --txt2:#9aa4b2; --line:rgba(201,162,39,.18);
+  --ok:#3fb950; --warn:#d29922; --red:#c94f4f;
+  --rad:16px; --sh:0 10px 40px rgba(0,0,0,.55);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Kanit','Noto Sans Thai',sans-serif;background:var(--bg);color:var(--txt);
+  line-height:1.75;overflow-x:hidden;font-weight:300;
+  background-image:
+    radial-gradient(900px 500px at 12% -8%,rgba(201,162,39,.10),transparent 60%),
+    radial-gradient(800px 460px at 90% 8%,rgba(74,93,58,.16),transparent 62%);
+  background-attachment:fixed;
+}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35;
+  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.012) 0 2px,transparent 2px 6px)}
+a{color:inherit;text-decoration:none}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--gold),var(--olive));border-radius:8px}
+
+.emblem{
+  border-radius:50%; border:2px solid var(--gold);
+  background:linear-gradient(135deg,rgba(180,30,30,0.85),rgba(100,15,15,0.95));
+  color:var(--gold2); display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'Kanit',sans-serif;font-weight:700;
+  box-shadow:0 0 0 4px rgba(201,162,39,.12),0 4px 16px rgba(0,0,0,.5);
+  user-select:none;flex:0 0 auto;text-align:center;
+}
+.emblem span{display:block;line-height:1.1;letter-spacing:.02em}
+
+/* SPLASH */
+#splash{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:18px;transition:opacity .6s ease,visibility .6s}
+#splash.hide{opacity:0;visibility:hidden}
+.sp-crest{width:96px;height:96px;font-size:1.45rem;animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.sp-t{font-weight:600;letter-spacing:.06em;color:var(--gold2);font-size:1.05rem;text-align:center}
+.sp-s{color:var(--txt2);font-size:.82rem;letter-spacing:.2em}
+.sp-bar{width:180px;height:3px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
+.sp-bar i{display:block;height:100%;width:40%;background:linear-gradient(90deg,var(--gold),var(--gold2));
+  animation:load 1.3s ease-in-out infinite}
+@keyframes load{0%{transform:translateX(-120%)}100%{transform:translateX(320%)}}
+
+/* TOPBAR */
+header{position:sticky;top:0;z-index:900;backdrop-filter:blur(14px);
+  background:rgba(10,13,18,.86);border-bottom:1px solid var(--line)}
+.bar{max-width:1240px;margin:auto;display:flex;align-items:center;gap:12px;padding:10px 16px;
+  padding-top:calc(10px + env(safe-area-inset-top))}
+.hamb{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--card);
+  color:var(--gold);display:grid;place-items:center;font-size:20px;cursor:pointer;flex:0 0 auto}
+.brand{display:flex;align-items:center;gap:11px;min-width:0;flex:1}
+.crest{width:38px;height:38px;font-size:.7rem}
+.bt{min-width:0}
+.bt b{display:block;font-size:.95rem;font-weight:600;color:var(--gold2);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.bt span{display:block;font-size:.66rem;color:var(--txt2);letter-spacing:.16em;text-transform:uppercase}
+.tools{display:flex;gap:8px;flex:0 0 auto}
+.ibtn{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--card);
+  color:var(--txt);display:grid;place-items:center;font-size:17px;cursor:pointer;transition:.2s}
+.ibtn:hover,.ibtn.on{background:var(--gold);color:#101010;border-color:var(--gold)}
+.progwrap{height:3px;background:rgba(255,255,255,.05)}
+.progwrap i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--olive2),var(--gold2));transition:width .5s}
+
+/* SEARCH */
+#searchbox{display:none;padding:0 16px 12px;max-width:1240px;margin:auto}
+#searchbox.show{display:block}
+#searchbox input{width:100%;padding:13px 16px;border-radius:14px;border:1px solid var(--line);
+  background:var(--card);color:var(--txt);font-family:inherit;font-size:.95rem;outline:none}
+#searchbox input:focus{border-color:var(--gold)}
+
+/* DRAWER */
+#scrim{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:950;opacity:0;visibility:hidden;transition:.3s}
+#scrim.show{opacity:1;visibility:visible}
+nav#drawer{position:fixed;top:0;left:0;bottom:0;width:290px;max-width:84vw;z-index:960;
+  background:linear-gradient(180deg,#10161f,#0a0d12);border-right:1px solid var(--line);
+  transform:translateX(-102%);transition:transform .34s cubic-bezier(.4,0,.2,1);
+  overflow-y:auto;padding:calc(20px + env(safe-area-inset-top)) 0 30px}
+nav#drawer.show{transform:none}
+.dhead{padding:0 20px 18px;border-bottom:1px solid var(--line);margin-bottom:12px;
+  display:flex;align-items:center;gap:12px}
+.dhead .crest{width:40px;height:40px;font-size:.72rem}
+.dhead h3{font-size:.97rem;color:var(--gold2);font-weight:600;line-height:1.3}
+.dhead p{font-size:.64rem;color:var(--txt2);letter-spacing:.1em}
+.dlbl{padding:14px 20px 6px;font-size:.66rem;letter-spacing:.2em;color:var(--txt2);text-transform:uppercase}
+.dlink{display:flex;align-items:center;gap:12px;padding:12px 20px;color:var(--txt2);font-size:.92rem;
+  cursor:pointer;border-left:3px solid transparent;transition:.2s}
+.dlink:hover{background:rgba(201,162,39,.07);color:var(--txt)}
+.dlink.on{background:rgba(201,162,39,.12);color:var(--gold2);border-left-color:var(--gold)}
+.dlink i{width:22px;text-align:center;font-style:normal;font-size:1rem}
+
+/* LAYOUT */
+main{max-width:1240px;margin:auto;padding:22px 16px 110px;position:relative;z-index:1}
+.view{display:none;animation:fade .4s ease}
+.view.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.sec-t{display:flex;align-items:center;gap:12px;margin:26px 0 16px}
+.sec-t::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+.sec-t h2{font-size:1.18rem;font-weight:600;color:var(--gold2)}
+.sec-t b{width:34px;height:34px;border-radius:10px;background:rgba(201,162,39,.12);border:1px solid var(--line);
+  color:var(--gold);display:grid;place-items:center;font-size:.95rem;flex:0 0 auto}
+
+/* HERO */
+.hero{border-radius:22px;overflow:hidden;border:1px solid var(--line);position:relative;
+  background:linear-gradient(135deg,#131b16,#0d1118 55%,#1a1508);padding:38px 24px;text-align:center;box-shadow:var(--sh)}
+.hero::before{content:"";position:absolute;inset:0;opacity:.07;
+  background:repeating-linear-gradient(115deg,#c9a227 0 14px,transparent 14px 34px)}
+.h-crest{width:84px;height:84px;margin:0 auto 16px;font-size:1.3rem}
+.hero h1{font-size:1.55rem;font-weight:700;color:var(--gold2);line-height:1.4}
+.hero .sub{color:var(--txt);font-size:1rem;margin-top:6px;font-weight:400}
+.hero .unit{display:inline-block;margin-top:14px;padding:7px 18px;border-radius:999px;
+  border:1px solid var(--gold);color:var(--gold2);font-size:.82rem;letter-spacing:.08em;background:rgba(201,162,39,.08)}
+.hero .quote{margin-top:18px;font-size:.84rem;color:var(--txt2);font-weight:300;font-style:italic}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:16px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--rad);padding:18px 14px;text-align:center}
+.stat b{display:block;font-size:1.6rem;color:var(--gold2);font-weight:700;line-height:1.2}
+.stat span{font-size:.74rem;color:var(--txt2);letter-spacing:.06em}
+
+/* CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.card{background:linear-gradient(160deg,var(--card),var(--card2));border:1px solid var(--line);
+  border-radius:var(--rad);padding:18px;position:relative;overflow:hidden;cursor:pointer;transition:.25s}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(var(--gold),var(--olive2));opacity:.75}
+.card:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 14px 34px rgba(0,0,0,.5)}
+.card .no{position:absolute;right:14px;top:12px;font-size:2.2rem;font-weight:700;color:rgba(201,162,39,.12);line-height:1}
+.card h4{font-size:1.02rem;font-weight:600;color:var(--txt);margin-bottom:6px;padding-right:38px}
+.card .cmd{display:inline-block;font-size:.8rem;color:var(--gold2);background:rgba(201,162,39,.10);
+  border:1px solid var(--line);border-radius:8px;padding:3px 10px;margin-bottom:8px}
+.card p{font-size:.82rem;color:var(--txt2);font-weight:300;display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden}
+.card .foot{display:flex;align-items:center;justify-content:space-between;margin-top:12px;
+  padding-top:10px;border-top:1px dashed rgba(255,255,255,.07)}
+.tag{font-size:.68rem;padding:3px 9px;border-radius:999px;letter-spacing:.05em}
+.t-hand{background:rgba(63,185,80,.13);color:#7ee28c}
+.t-weapon{background:rgba(88,166,255,.13);color:#79b8ff}
+.t-med{background:rgba(210,153,34,.14);color:#e3b341}
+.chk{width:26px;height:26px;border-radius:8px;border:1px solid var(--line);display:grid;place-items:center;
+  font-size:.75rem;color:var(--txt2);background:rgba(255,255,255,.03);transition:.2s}
+.chk.done{background:var(--ok);border-color:var(--ok);color:#06210c}
+
+/* CHIPS */
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:var(--card);
+  color:var(--txt2);font-size:.82rem;cursor:pointer;font-family:inherit;transition:.2s;white-space:nowrap}
+.chip.on{background:linear-gradient(135deg,var(--gold),#a8871c);color:#141004;border-color:var(--gold);font-weight:500}
+
+/* SHEET */
+#sheet{position:fixed;inset:0;z-index:980;display:none}
+#sheet.show{display:block}
+#sheet .bg{position:absolute;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(3px)}
+#sheet .panel{position:absolute;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:760px;
+  max-height:92vh;overflow-y:auto;background:linear-gradient(180deg,#151d29,#0c1017);
+  border:1px solid var(--line);border-radius:24px 24px 0 0;padding:0 0 calc(28px + env(safe-area-inset-bottom));
+  animation:up .36s cubic-bezier(.3,1,.4,1)}
+@keyframes up{from{transform:translate(-50%,100%)}to{transform:translate(-50%,0)}}
+.sh-head{position:sticky;top:0;z-index:2;background:rgba(21,29,41,.96);backdrop-filter:blur(10px);
+  padding:16px 20px 14px;border-bottom:1px solid var(--line);border-radius:24px 24px 0 0}
+.grab{width:42px;height:4px;border-radius:4px;background:rgba(255,255,255,.2);margin:0 auto 12px}
+.sh-head h3{font-size:1.2rem;color:var(--gold2);font-weight:600;padding-right:44px}
+.sh-close{position:absolute;right:16px;top:26px;width:34px;height:34px;border-radius:10px;
+  border:1px solid var(--line);background:var(--card);color:var(--txt);cursor:pointer;font-size:16px}
+.sh-body{padding:18px 20px}
+.cmdbox{background:linear-gradient(135deg,rgba(201,162,39,.14),rgba(74,93,58,.10));
+  border:1px solid var(--gold);border-radius:var(--rad);padding:16px;text-align:center;margin-bottom:18px}
+.cmdbox small{display:block;font-size:.68rem;letter-spacing:.2em;color:var(--txt2)}
+.cmdbox b{display:block;font-size:1.4rem;color:var(--gold2);font-weight:700;margin:6px 0}
+.cmdbox .kind{font-size:.74rem;color:var(--txt2)}
+.speak{margin-top:12px;padding:9px 20px;border-radius:999px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--gold),#a8871c);color:#141004;font-family:inherit;font-weight:500;font-size:.85rem}
+.speak:active{transform:scale(.96)}
+.steps{list-style:none;counter-reset:s}
+.steps li{counter-increment:s;position:relative;padding:0 0 18px 46px;border-left:2px solid var(--line);margin-left:15px}
+.steps li:last-child{border-left-color:transparent;padding-bottom:4px}
+.steps li::before{content:counter(s);position:absolute;left:-16px;top:-2px;width:31px;height:31px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),#8d7218);color:#141004;display:grid;place-items:center;
+  font-size:.82rem;font-weight:700}
+.steps li b{display:block;color:var(--gold2);font-size:.9rem;font-weight:500;margin-bottom:3px}
+.steps li span{font-size:.88rem;color:var(--txt2);font-weight:300}
+.note{background:rgba(210,153,34,.09);border-left:3px solid var(--warn);border-radius:0 12px 12px 0;
+  padding:12px 14px;margin-top:16px;font-size:.84rem;color:#e6cc8a;font-weight:300}
+.note b{color:var(--warn);display:block;font-size:.8rem;margin-bottom:3px}
+.markbtn{width:100%;margin-top:18px;padding:14px;border-radius:14px;border:1px solid var(--ok);
+  background:rgba(63,185,80,.10);color:#7ee28c;font-family:inherit;font-size:.92rem;cursor:pointer;transition:.2s}
+.markbtn.done{background:var(--ok);color:#06210c;font-weight:600}
+
+/* BLOCK */
+.block{background:var(--card);border:1px solid var(--line);border-radius:var(--rad);padding:20px;margin-bottom:14px}
+.block h4{color:var(--gold2);font-size:1rem;font-weight:600;margin-bottom:10px}
+.block p,.block li{font-size:.89rem;color:var(--txt2);font-weight:300}
+.block ul{padding-left:20px;margin-top:8px}
+.block li{margin-bottom:7px}
+.kbd{display:inline-block;background:rgba(201,162,39,.12);border:1px solid var(--line);border-radius:7px;
+  padding:1px 9px;color:var(--gold2);font-size:.85rem}
+
+/* QUIZ */
+.q-card{background:var(--card);border:1px solid var(--line);border-radius:var(--rad);padding:22px}
+.q-meta{display:flex;justify-content:space-between;font-size:.76rem;color:var(--txt2);margin-bottom:14px}
+.q-txt{font-size:1.04rem;color:var(--txt);font-weight:400;margin-bottom:18px;line-height:1.6}
+.opt{width:100%;text-align:left;padding:14px 16px;margin-bottom:10px;border-radius:13px;
+  border:1px solid var(--line);background:var(--card2);color:var(--txt);font-family:inherit;
+  font-size:.9rem;font-weight:300;cursor:pointer;transition:.18s}
+.opt:hover{border-color:var(--gold)}
+.opt.right{background:rgba(63,185,80,.16);border-color:var(--ok);color:#9ae8a6}
+.opt.wrong{background:rgba(201,79,79,.16);border-color:var(--red);color:#f0a0a0}
+.qbtn{width:100%;padding:14px;border-radius:14px;border:none;font-family:inherit;font-size:.95rem;
+  cursor:pointer;background:linear-gradient(135deg,var(--gold),#a8871c);color:#141004;font-weight:600;margin-top:8px}
+.result{text-align:center;padding:26px 20px}
+.result .score{font-size:3.1rem;font-weight:700;color:var(--gold2);line-height:1.1}
+.rlogo{width:74px;height:74px;margin:0 auto 10px;font-size:1.15rem}
+
+/* BOTTOM NAV */
+#bnav{position:fixed;left:0;right:0;bottom:0;z-index:920;display:flex;
+  background:rgba(12,16,23,.95);backdrop-filter:blur(14px);border-top:1px solid var(--line);
+  padding-bottom:env(safe-area-inset-bottom)}
+#bnav button{flex:1;background:none;border:none;color:var(--txt2);font-family:inherit;font-size:.62rem;
+  padding:9px 2px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:.2s}
+#bnav button i{font-style:normal;font-size:1.1rem;line-height:1}
+#bnav button.on{color:var(--gold2)}
+
+/* FOOTER */
+footer{text-align:center;padding:26px 16px 12px;border-top:1px solid var(--line);margin-top:34px}
+.flogo{width:50px;height:50px;margin:0 auto 10px;font-size:.8rem}
+footer p{font-size:.78rem;color:var(--txt2);font-weight:300}
+footer b{color:var(--gold2);font-weight:500}
+
+@media(min-width:900px){
+  .hamb{display:none}
+  nav#drawer{transform:none;position:sticky;top:64px;height:calc(100vh - 64px)}
+  #bnav{display:none}
+  main{padding-bottom:40px}
+  .shell{display:grid;grid-template-columns:270px 1fr;max-width:1300px;margin:auto}
+  #scrim{display:none!important}
+  .hero h1{font-size:2rem}
+}
+@media(max-width:430px){
+  .hero h1{font-size:1.3rem}.stat b{font-size:1.45rem}
+  .h-crest{width:74px;height:74px;font-size:1.1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="emblem sp-crest"><span>มทบ.</span><span>๔๓</span></div>
+  <div class="sp-t">คู่มือทหารใหม่ มทบ.43<br>ฉบับสมบูรณ์</div>
+  <div class="sp-s">ท่ามือเปล่า · ท่าอาวุธ · การแพทย์</div>
+  <div class="sp-bar"><i></i></div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="bar">
+    <button class="hamb" onclick="toggleDrawer(true)">☰</button>
+    <div class="brand">
+      <div class="emblem crest"><span>มทบ.</span><span>๔๓</span></div>
+      <div class="bt">
+        <b>หน่วยฝึกทหารใหม่ มทบ.43</b>
+        <span>คู่มือฝึกครบถ้วนทุกหมวดวิชา</span>
+      </div>
+    </div>
+    <div class="tools">
+      <button class="ibtn" id="sbtn" onclick="toggleSearch()">🔍</button>
+      <button class="ibtn" onclick="go('quiz')">✓</button>
+    </div>
+  </div>
+  <div id="searchbox"><input id="q" type="search" placeholder="ค้นหาท่ามือเปล่า, ท่าอาวุธ, การปฐมพยาบาล..." oninput="doSearch(this.value)"></div>
+  <div class="progwrap"><i id="topprog"></i></div>
+</header>
+
+<div id="scrim" onclick="toggleDrawer(false)"></div>
+
+<div class="shell">
+<nav id="drawer">
+  <div class="dhead">
+    <div class="emblem crest"><span>มทบ.</span><span>๔๓</span></div>
+    <div>
+      <h3>สารบัญคู่มือ</h3>
+      <p>MASTER MANUAL</p>
+    </div>
+  </div>
+  <div class="dlbl">ภาพรวม</div>
+  <div class="dlink on" data-v="home" onclick="go('home')"><i>⌂</i>หน้าแรก</div>
+  <div class="dlbl">หมวดวิชา</div>
+  <div class="dlink" data-v="moves" onclick="go('moves')"><i>▤</i>1. บุคคลท่ามือเปล่า (21 ท่า)</div>
+  <div class="dlink" data-v="weapons" onclick="go('weapons')"><i>⚔</i>2. บุคคลท่าอาวุธ (23 ท่าหลัก)</div>
+  <div class="dlink" data-v="medic" onclick="go('medic')"><i>✚</i>3. ปฐมพยาบาล &amp; การแพทย์</div>
+  <div class="dlbl">ประเมินผล</div>
+  <div class="dlink" data-v="quiz" onclick="go('quiz')"><i>✓</i>แบบทดสอบรวมทุกวิชา</div>
+  <div class="dlbl">ระบบ</div>
+  <div class="dlink" data-v="about" onclick="go('about')"><i>ⓘ</i>เกี่ยวกับผู้พัฒนา</div>
+</nav>
+
+<main>
+<!-- HOME -->
+<section class="view on" id="v-home">
+  <div class="hero">
+    <div class="emblem h-crest"><span>มทบ.</span><span>๔๓</span></div>
+    <h1>คู่มือการฝึกทหารใหม่ มทบ.43</h1>
+    <div class="sub">รวบรวมเนื้อหาครบถ้วนตามระเบียบ (มือเปล่า, อาวุธ และการแพทย์)</div>
+    <div class="unit">หน่วยฝึกทหารใหม่ มณฑลทหารบกที่ 43</div>
+    <p class="quote">“ความพร้อมเพรียง วินัย และความปลอดภัย คือเกียรติยศทหารใหม่”</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b id="sTotalMoves">21</b><span>ท่ามือเปล่า</span></div>
+    <div class="stat"><b id="sTotalWeap">23</b><span>ท่าอาวุธหลัก</span></div>
+    <div class="stat"><b id="sDone">0</b><span>หัวข้อที่ผ่านแล้ว</span></div>
+    <div class="stat"><b id="sPct">0%</b><span>ความก้าวหน้า</span></div>
+  </div>
+
+  <div class="sec-t"><b>◈</b><h2>เลือกหมวดวิชาฝึก</h2></div>
+  <div class="grid">
+    <div class="card" onclick="go('moves')"><div class="no">01</div><h4>บุคคลท่ามือเปล่า</h4><p>21 ท่าพื้นฐาน ท่าหัน ท่าก้าว และท่าเคารพพระราชทาน</p><div class="foot"><span class="tag t-hand">ปฏิบัติ</span><span style="color:var(--gold2);font-size:.8rem">เข้าสู่บทเรียน →</span></div></div>
+    <div class="card" onclick="go('weapons')"><div class="no">02</div><h4>บุคคลท่าอาวุธ</h4><p>ครอบคลุม 23 ท่าหลัก (เรียบอาวุธ, วันทยาวุธ, สะพาย, ตรวจ และรบประชิด)</p><div class="foot"><span class="tag t-weapon">อาวุธศึกษา</span><span style="color:var(--gold2);font-size:.8rem">เข้าสู่บทเรียน →</span></div></div>
+    <div class="card" onclick="go('medic')"><div class="no">03</div><h4>ปฐมพยาบาล &amp; การแพทย์</h4><p>การคัดกรองโรคลมร้อน มาตรการธงสี การทำ CPR และการช่วยชีวิตฉุกเฉิน</p><div class="foot"><span class="tag t-med">ความปลอดภัย</span><span style="color:var(--gold2);font-size:.8rem">เข้าสู่บทเรียน →</span></div></div>
+    <div class="card" onclick="go('quiz')"><div class="no">04</div><h4>แบบทดสอบความรู้</h4><p>ทดสอบความพร้อม 10 ข้อ สุ่มจากทุกหมวดวิชา พร้อมเฉลย</p><div class="foot"><span class="tag t-hand">ประเมินผล</span><span style="color:var(--gold2);font-size:.8rem">เริ่มทำข้อสอบ →</span></div></div>
+  </div>
+</section>
+
+<!-- MOVES (มือเปล่า) -->
+<section class="view" id="v-moves">
+  <div class="sec-t"><b>▤</b><h2>บุคคลท่ามือเปล่า (21 ท่า)</h2></div>
+  <div class="chips" id="chips"></div>
+  <div class="grid" id="moveGrid"></div>
+  <p id="noRes" style="display:none;text-align:center;color:var(--txt2);padding:40px 0">ไม่พบท่าที่ค้นหา</p>
+</section>
+
+<!-- WEAPONS (ท่าอาวุธ) -->
+<section class="view" id="v-weapons">
+  <div class="sec-t"><b>⚔</b><h2>บุคคลท่าอาวุธ (ฉบับสมบูรณ์ พ.ศ.2560)</h2></div>
+  <p style="color:var(--txt2);font-size:.9rem;margin-bottom:16px">รวบรวมท่าอาวุธหลักตามคู่มือการฝึก ทบ. พร้อมคำบอกและรายละเอียดการปฏิบัติ</p>
+  <div class="grid" id="weaponGrid"></div>
+</section>
+
+<!-- MEDIC (การปฐมพยาบาล) -->
+<section class="view" id="v-medic">
+  <div class="sec-t"><b>✚</b><h2>การปฐมพยาบาลและการแพทย์เบื้องต้น</h2></div>
+  
+  <div class="block">
+    <h4>◆ มาตรการคัดกรองและประเมินสุขภาพทหารใหม่</h4>
+    <ul>
+      <li><b style="color:var(--gold2)">คัดกรองรายวัน:</b> ตรวจวัดไข้, ตรวจสีปัสสาวะ (เช้า-ก่อนนอน) เพื่อประเมินภาวะขาดน้ำ</li>
+      <li><b style="color:var(--gold2)">กลุ่มเสี่ยง:</b> เฝ้าระวังกำลังพลที่มีดัชนีมวลกาย (BMI) สูง, มีโรคประจำตัว หรือสภาพจิตใจไม่ปกติ (ประเมิน Q9/Q8)</li>
+      <li><b style="color:var(--gold2)">มาตรการธงสี:</b> ปรับความหนักของการฝึก, ระยะเวลาพัก และการดื่มน้ำตามค่าดัชนีความร้อน (WBGT) ในแต่ละวัน</li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h4>◆ การป้องกันและรักษาโรคลมร้อน (Heat Stroke)</h4>
+    <ul>
+      <li><b style="color:var(--gold2)">การเตรียมพร้อม:</b> หน่วยฝึกต้องจัดเตรียมชุดปฐมพยาบาลโรคลมร้อนพกพา (ถังน้ำ, กระบอกฉีดน้ำ, ผ้าเช็ดตัว, น้ำแข็ง/น้ำเย็น, ปรอทวัดไข้)</li>
+      <li><b style="color:var(--gold2)">การปฐมพยาบาลฉุกเฉิน:</b> เมื่อพบผู้มีอาการตัวร้อนจัด หน้ามืด เป็นลม ให้ย้ายเข้าที่ร่มทันที ถอดเสื้อผ้าออก ใช้ผ้าชุบน้ำเย็นเช็ดตัวหรือพ่นน้ำร่วมกับการพัดเพื่อลดอุณหภูมิร่างกายอย่างรวดเร็ว</li>
+      <li><b style="color:var(--gold2)">การส่งต่อ:</b> หากอาการไม่ดีขึ้นหรือหมดสติ ให้รีบนำส่งโรงพยาบาลโดยด่วน</li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h4>◆ การช่วยเหลือชีวิตฉุกเฉิน (CPR &amp; AED)</h4>
+    <p>หากพบผู้ป่วย <b style="color:var(--gold2)">ไม่หายใจ (หรือหายใจเฮือก) ร่วมกับไม่รู้สึกตัว</b> ให้ปฏิบัติทันที:</p>
+    <ul>
+      <li>ประเมินสถานการณ์และปลุกเรียกผู้ป่วย</li>
+      <li>โทรแจ้งขอความช่วยเหลือทางการแพทย์</li>
+      <li><b style="color:var(--gold2)">เริ่มทำ CPR:</b> กดหน้าอกด้วยความลึก 5-6 ซม. ด้วยอัตราเร็ว 100-120 ครั้ง/นาที</li>
+      <li><b style="color:var(--gold2)">ใช้เครื่อง AED:</b> นำเครื่องกระตุ้นหัวใจด้วยไฟฟ้าอัตโนมัติมาติดแผ่นนำไฟฟ้าและทำตามคำแนะนำของเครื่องทันที</li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h4>◆ มาตรการโรคติดต่อทางเดินหายใจ</h4>
+    <ul>
+      <li>สวมหน้ากากอนามัยในพื้นที่แออัดเมื่อมีความเสี่ยง</li>
+      <li>หากตรวจพบโรคติดต่อ ให้แยกกักรักษาตัว (CI) และหยุดพักรักษาอย่างน้อย 5 วันก่อนกลับเข้าแถวฝึก</li>
+      <li>รายงานข้อมูลผ่านระบบ AMED Health Protection อย่างเคร่งครัด</li>
+    </ul>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="view" id="v-quiz">
+  <div class="sec-t"><b>✓</b><h2>แบบทดสอบความรู้รวม</h2></div>
+  <div id="quizArea"></div>
+</section>
+
+<!-- ABOUT -->
+<section class="view" id="v-about">
+  <div class="sec-t"><b>ⓘ</b><h2>เกี่ยวกับคู่มือ</h2></div>
+  <div class="hero" style="padding:30px 22px">
+    <div class="emblem h-crest" style="width:78px;height:78px;font-size:1.05rem"><span>มทบ.</span><span>๔๓</span></div>
+    <h1 style="font-size:1.25rem">หน่วยฝึกทหารใหม่ มทบ.43</h1>
+    <div class="sub" style="font-size:.9rem">คู่มือฝึกทหารใหม่ครบวงจร (มือเปล่า · ท่าอาวุธ · การแพทย์)</div>
+    <div class="unit">ผู้พัฒนา : ร.ท.เลิศศิลป์ แสงสุริยา</div>
+  </div>
+  <div class="block" style="margin-top:14px"><h4>◆ วัตถุประสงค์ของสื่อ</h4>
+    <p>จัดทำขึ้นเพื่อเป็นสื่อการเรียนรู้แบบโต้ตอบ สำหรับทหารใหม่และครูฝึก ใช้ทบทวนวิชาการฝึกทหารใหม่ได้ครบถ้วนทุกหมวดวิชาผ่านมือถือ แท็บเล็ต หรือคอมพิวเตอร์</p></div>
+  <div class="block"><h4>◆ จัดการข้อมูล</h4>
+    <p style="margin-bottom:12px">ความก้าวหน้าของคุณถูกบันทึกไว้ในเบราว์เซอร์เครื่องนี้</p>
+    <button class="qbtn" style="background:linear-gradient(135deg,#c94f4f,#8d2f2f);color:#fff" onclick="resetAll()">ล้างความก้าวหน้าทั้งหมด</button></div>
+  <footer>
+    <div class="emblem flogo"><span>มทบ.</span><span>๔๓</span></div>
+    <p>แหล่งอ้างอิง : คู่มือบุคคลท่ามือเปล่า และคู่มือท่าอาวุธ (พ.ศ.2560)</p>
+    <p style="margin-top:6px">พัฒนาโดย <b>ร.ท.เลิศศิลป์ แสงสุริยา</b></p>
+    <p style="margin-top:2px">หน่วยฝึกทหารใหม่ มณฑลทหารบกที่ 43</p>
+  </footer>
+</section>
+</main>
+</div>
+
+<div id="bnav">
+  <button class="on" data-v="home" onclick="go('home')"><i>⌂</i>หน้าแรก</button>
+  <button data-v="moves" onclick="go('moves')"><i>▤</i>มือเปล่า</button>
+  <button data-v="weapons" onclick="go('weapons')"><i>⚔</i>ท่าอาวุธ</button>
+  <button data-v="medic" onclick="go('medic')"><i>✚</i>การแพทย์</button>
+  <button data-v="quiz" onclick="go('quiz')"><i>✓</i>สอบ</button>
+</div>
+
+<div id="sheet">
+  <div class="bg" onclick="closeSheet()"></div>
+  <div class="panel">
+    <div class="sh-head"><div class="grab"></div><h3 id="shTitle">—</h3>
+      <button class="sh-close" onclick="closeSheet()">✕</button></div>
+    <div class="sh-body" id="shBody"></div>
+  </div>
+</div>
+
+<script>
+/* ============ DATA ============ */
+const CAT={still:"ท่าอยู่กับที่",turn:"ท่าหัน",step:"ท่าก้าว",hon:"ท่าเคารพ"};
+const M=[
+{id:1,n:"ท่าตรง",c:"still",cmd:"แถว - ตรง",k:"คำบอกแบ่ง",say:"แถว ตรง",
+ d:"ท่าพื้นฐานของทุกท่าฝึก แสดงถึงความพร้อม สง่าผ่าเผย และมีระเบียบวินัย",
+ s:[["ท่าเท้า","ยืนส้นเท้าชิด ปลายเท้าแยกห่างกันประมาณหนึ่งคืบ ทำมุมประมาณ 45 องศา"],
+    ["ท่าขา","เข่าตึง บีบเข่าเข้าหากัน ขาทั้งสองเหยียดตรง"],
+    ["ลำตัว","ลำตัวตั้งตรง อกผายไหล่ผึ่ง เก็บคาง สายตามองตรงไปข้างหน้าในแนวระดับ"],
+    ["ท่าแขน–มือ","แขนอยู่ข้างลำตัว งอข้อศอกให้เกิดช่องว่างห่างจากลำตัวหนึ่งฝ่ามือ พลิกข้อศอกไปข้างหน้า นิ้วมือเรียงชิดติดกัน นิ้วกลางแตะแนวตะเข็บกางเกง"]],
+ w:"ข้อห้าม : ส้นเท้าไม่ชิด ปลายเท้าไม่ทำมุม ไหล่ห่อ หรือสายตาลอย"},
+{id:2,n:"ท่ายกอก",c:"still",cmd:"ยก, อก",k:"คำบอกเป็นคำๆ",say:"ยก อก อึ๊บ",
+ d:"ท่าพระราชทาน เดิมเรียก “ท่าแก้เขิน” ใช้ต่อท้ายทุกท่าที่ปฏิบัติจบจังหวะ",
+ s:[["จังหวะ ยก","ยกหน้าอกขึ้นในลักษณะกระตุกหน้าอก ไม่ใช่การยกไหล่ และไม่ใช่การสูดลมหายใจ"],
+    ["จังหวะ อก","คงลักษณะอกผายไหล่ผึ่ง เก็บคาง ลำตัวอยู่ในท่าตรง"],
+    ["สะบัดหน้า (อึ๊บ)","สะบัดหน้าไปยังทิศทางผู้รับการเคารพในลักษณะกัดกราม ไปในทิศทางตรงหน้า ทางขวา หรือทางซ้าย"]],
+ w:"ที่มา : ทรงพระราชทานคำสอนและทรงแสดงพระองค์เป็นแบบอย่างในการยืดอก เก็บคาง และสะบัดหน้า"},
+{id:3,n:"ท่าพักตามปกติ",c:"still",cmd:"พัก",k:"คำบอกรวด",say:"พัก",
+ d:"การพักในแถวที่ยังคงรักษาระเบียบและตำแหน่งยืนไว้ทั้งหมด",
+ s:[["การพัก","หย่อนเข่าขวาลงเล็กน้อย ส่วนอื่นของร่างกายคงอยู่ในลักษณะท่าตรง"],
+    ["กลับเข้าท่าตรง — คำว่า “แถว”","สูดลมหายใจเข้าปอดสั้นๆ พร้อมยกอก"],
+    ["กลับเข้าท่าตรง — คำว่า “ตรง”","กระตุกเข่าขวากลับเข้าสู่ลักษณะท่าตรง"]],
+ w:"ข้อห้าม : พูดคุย หรือเปลี่ยนที่ยืนของเท้า"},
+{id:4,n:"ท่าพักตามระเบียบ",c:"still",cmd:"ตามระเบียบ, พัก",k:"คำบอกเป็นคำๆ",say:"ตามระเบียบ พัก",
+ d:"ท่าพักที่ใช้ในพิธีการ หรือเมื่อต้องยืนรอเป็นเวลานานอย่างมีระเบียบ",
+ s:[["จังหวะเท้า","แยกเท้าซ้ายตบลงพื้นห่างจากเท้าขวาประมาณ 30 เซนติเมตร"],
+    ["จังหวะมือ","นำมือทั้งสองข้างประสานไว้ด้านหลัง หันหลังมือเข้าหาลำตัว มือขวาทับมือซ้าย นิ้วเรียงชิดติดกัน"],
+    ["จัดลำตัว","แบะข้อศอกทั้งสองไปข้างหน้าจนไหล่ตึง ขาทั้งสองเหยียดตึง ลำตัวตั้งตรง"]],
+ w:"ระยะแยกเท้าต้องเท่ากันทั้งแถว จึงจะเกิดความพร้อมเพรียงสวยงาม"},
+{id:5,n:"ท่าพักตามสบาย",c:"still",cmd:"ตามสบาย, พัก",k:"คำบอกเป็นคำๆ",say:"ตามสบาย พัก",
+ d:"ท่าพักที่ผ่อนคลายที่สุด แต่ยังต้องคงตำแหน่งในแถวไว้",
+ s:[["เริ่มต้น","ค่อยๆ หย่อนเข่าขวาลงเล็กน้อยเช่นเดียวกับท่าพักตามปกติ"],
+    ["การเคลื่อนไหว","สามารถเคลื่อนไหวส่วนต่างๆ ของร่างกายได้ตามสบาย"],
+    ["ข้อจำกัด","เท้าข้างใดข้างหนึ่งต้องอยู่เป็นหลัก ห้ามออกนอกที่ตั้งของตน"]],
+ w:"แม้พักตามสบาย ก็ต้องพร้อมกลับเข้าท่าตรงได้ทันทีเมื่อได้ยินคำบอก"},
+{id:6,n:"ท่าพักแถว",c:"still",cmd:"พักแถว",k:"คำบอกรวด",say:"พักแถว",
+ d:"ใช้เมื่อต้องการให้ออกจากแถวชั่วคราว และจะกลับเข้าแถวอีกครั้ง",
+ s:[["จังหวะหนึ่ง","ปฏิบัติท่ากึ่งขวาหัน"],["จังหวะสอง","ตบเท้าซ้ายไปข้างหน้า"],
+    ["จังหวะสาม","ยกมือทั้งสองกำหลวมขึ้นมาบริเวณหน้าอก ข้อศอกกางออกเล็กน้อย"],
+    ["จังหวะสี่","เปล่งเสียง “เฮ้” พร้อมเพรียงกัน แล้วออกนอกแถวทันที"]],
+ w:"เสียง “เฮ้” ต้องสั้น หนักแน่น และพร้อมกันทั้งแถว"},
+{id:7,n:"ท่าเลิกแถว",c:"still",cmd:"เลิกแถว",k:"คำบอกรวด",say:"เลิกแถว",
+ d:"ใช้เมื่อสิ้นสุดการฝึกหรือภารกิจ เป็นการปล่อยแถวอย่างเป็นทางการ",
+ s:[["จังหวะหนึ่ง","ปฏิบัติท่ากึ่งขวาหัน"],
+    ["จังหวะสอง","เตะเท้าซ้ายไปข้างหน้า งุ้มปลายเท้า แล้วตบเท้าลงพื้นอย่างแข็งแรง"],
+    ["จังหวะสาม","ยกมือทั้งสองกำหลวมขึ้นมาบริเวณหน้าอก ข้อศอกกางออกเล็กน้อย"],
+    ["จังหวะสี่","เปล่งเสียง “เฮ้” แล้วออกนอกแถวทันที"]],
+ w:"ต่างจากท่าพักแถวตรงที่ต้อง “เตะเท้าซ้ายงุ้มปลายเท้า” ก่อนตบลงพื้น"},
+{id:8,n:"ท่าซ้ายหัน",c:"turn",cmd:"ซ้าย - หัน",k:"คำบอกแบ่ง",say:"ซ้าย หัน",
+ d:"หันตัวไปทางซ้าย 90 องศา ปฏิบัติ 2 จังหวะ",
+ s:[["จังหวะหนึ่ง","เปิดปลายเท้าซ้าย ยกส้นเท้าขวาขึ้นเล็กน้อย ใช้ส้นเท้าซ้ายเป็นจุดหมุน หมุนตัวไปทางซ้าย 90 องศา ขณะหมุนใช้ปลายเท้าขวากดแน่นกับพื้น แล้วบิดส้นเท้าขวาออกนอกลำตัวจนขาขวาเหยียดตึง ส้นเท้าขวาเปิด ปลายเท้าขวาชี้ไปทิศทางตรงหน้า"],
+    ["จังหวะสอง","นำส้นเท้าขวามาชิดส้นเท้าซ้ายในลักษณะวาดเท้าไปด้านข้าง ขาเหยียดตึง แล้วอัดส้นเท้าอย่างแข็งแรง"],
+    ["ต่อเนื่อง","ปฏิบัติต่อด้วยท่ายกอก"]],
+ w:"จุดหมุนคือ “ส้นเท้าซ้าย” ห้ามยกเท้าลอยหรือเขย่งตัวขณะหมุน"},
+{id:9,n:"ท่าขวาหัน",c:"turn",cmd:"ขวา - หัน",k:"คำบอกแบ่ง",say:"ขวา หัน",
+ d:"หันตัวไปทางขวา 90 องศา ปฏิบัติ 2 จังหวะ",
+ s:[["จังหวะหนึ่ง","เปิดปลายเท้าขวา ยกส้นเท้าซ้ายขึ้นเล็กน้อย ใช้ส้นเท้าขวาเป็นจุดหมุน หมุนตัวไปทางขวา 90 องศา ขณะหมุนใช้ปลายเท้าซ้ายกดแน่นกับพื้น แล้วบิดส้นเท้าซ้ายออกนอกลำตัวจนขาซ้ายเหยียดตึง ส้นเท้าซ้ายเปิด ปลายเท้าซ้ายชี้ไปทิศทางตรงหน้า"],
+    ["จังหวะสอง","นำส้นเท้าซ้ายมาชิดส้นเท้าขวาในลักษณะวาดเท้าไปด้านข้าง ขาเหยียดตึง แล้วอัดส้นเท้าอย่างแข็งแรง"],
+    ["ต่อเนื่อง","ปฏิบัติต่อด้วยท่ายกอก"]],
+ w:"จุดหมุนคือ “ส้นเท้าขวา” ลำตัวต้องนิ่ง ไม่โยกตามแรงหมุน"},
+{id:10,n:"ท่ากลับหลังหัน",c:"turn",cmd:"กลับหลัง - หัน",k:"คำบอกแบ่ง",say:"กลับหลัง หัน",
+ d:"หันตัวกลับ 180 องศา โดยหมุนไปทางขวา ปฏิบัติ 2 จังหวะ",
+ s:[["จังหวะหนึ่ง","เปิดปลายเท้าขวา ยกส้นเท้าซ้ายขึ้นเล็กน้อย ใช้ส้นเท้าขวาเป็นจุดหมุน ยกเท้าซ้ายเหวี่ยงไปทางซ้าย นำปลายเท้าซ้ายไปวางแตะพื้นด้านหลังเฉียงไปทางซ้ายของลำตัวประมาณครึ่งก้าวหรือหนึ่งช่วงไหล่ แล้วหมุนตัวไปทางขวา 180 องศา"],
+    ["จังหวะสอง","นำส้นเท้าซ้ายมาชิดส้นเท้าขวาในลักษณะวาดเท้าไปด้านข้าง ขาเหยียดตึง แล้วอัดส้นเท้าอย่างแข็งแรง"],
+    ["ต่อเนื่อง","ปฏิบัติต่อด้วยท่ายกอก"]],
+ w:"ระยะวางปลายเท้าซ้ายด้านหลังต้องได้ประมาณ “ครึ่งก้าว” หรือ “หนึ่งช่วงไหล่” จึงจะหมุนได้ครบ 180 องศาอย่างมั่นคง"},
+{id:11,n:"ท่ากึ่งซ้ายหัน",c:"turn",cmd:"กึ่งซ้าย - หัน",k:"คำบอกแบ่ง",say:"กึ่งซ้าย หัน",
+ d:"หันตัวไปทางซ้าย 45 องศา ปฏิบัติ 2 จังหวะ",
+ s:[["จังหวะหนึ่ง","เปิดปลายเท้าซ้าย ยกส้นเท้าขวาขึ้นเล็กน้อย ใช้ส้นเท้าซ้ายเป็นจุดหมุน หมุนตัวไปทางซ้าย 45 องศา บิดส้นเท้าขวาออกนอกลำตัวจนขาขวาเหยียดตึง ส้นเท้าขวาเปิด ปลายเท้าขวาชี้ไปทิศทางตรงหน้า"],
+    ["จังหวะสอง","นำส้นเท้าขวามาชิดส้นเท้าซ้าย ขาเหยียดตึง แล้วอัดส้นเท้าอย่างแข็งแรง"],
+    ["ต่อเนื่อง","ปฏิบัติต่อด้วยท่ายกอก"]],
+ w:"ต่างจากท่าซ้ายหันเพียงมุมการหมุน คือ 45 องศา เท่านั้น"},
+{id:12,n:"ท่ากึ่งขวาหัน",c:"turn",cmd:"กึ่งขวา - หัน",k:"คำบอกแบ่ง",say:"กึ่งขวา หัน",
+ d:"หันตัวไปทางขวา 45 องศา ปฏิบัติ 2 จังหวะ ใช้เป็นจังหวะแรกของท่าพักแถวและเลิกแถว",
+ s:[["จังหวะหนึ่ง","เปิดปลายเท้าขวา ยกส้นเท้าซ้ายขึ้นเล็กน้อย ใช้ส้นเท้าขวาเป็นจุดหมุน หมุนตัวไปทางขวา 45 องศา บิดส้นเท้าซ้ายออกนอกลำตัวจนขาซ้ายเหยียดตึง ส้นเท้าซ้ายเปิด ปลายเท้าซ้ายชี้ไปทิศทางตรงหน้า"],
+    ["จังหวะสอง","นำส้นเท้าซ้ายมาชิดส้นเท้าขวา ขาเหยียดตึง แล้วอัดส้นเท้าอย่างแข็งแรง"],
+    ["ต่อเนื่อง","ปฏิบัติต่อด้วยท่ายกอก"]],
+ w:"เป็นท่าตั้งต้นของท่าพักแถวและท่าเลิกแถว ต้องฝึกให้แม่นยำ"},
+{id:13,n:"ท่าก้าวทางข้าง",c:"step",cmd:"ก้าวทางข้าง, ทำ",k:"คำบอกเป็นคำๆ",say:"ก้าวทางข้าง ทำ",
+ d:"ใช้จัดแถวหรือเคลื่อนที่ทางข้างในระยะสั้น ปฏิบัติ 4 จังหวะ",
+ s:[["จังหวะหนึ่ง","ยกส้นเท้าทั้งสองข้างขึ้น ยืนด้วยปลายเท้า ส่วนอื่นอยู่ในลักษณะท่าตรง"],
+    ["จังหวะสอง","ก้าวเท้าไปทางข้างทางขวา (หรือซ้าย) ประมาณ 30 เซนติเมตร"],
+    ["จังหวะสาม","นำส้นเท้าซ้าย (หรือขวา) ไปชิดส้นเท้าขวา (หรือซ้าย) อย่างแข็งแรง"],
+    ["จังหวะสี่","ลดส้นเท้าทั้งสองข้างลงพร้อมกัน หากจะก้าวต่อให้ยกส้นเท้าขึ้นปฏิบัติเหมือนการก้าวครั้งแรก"]],
+ w:"ระยะก้าวต้องได้ 30 ซม. เท่ากันทุกนาย ลำตัวห้ามโยกหรือเอียง"},
+{id:14,n:"ท่าก้าวถอยหลัง",c:"step",cmd:"ก้าวถอยหลัง, ทำ",k:"คำบอกเป็นคำๆ",say:"ก้าวถอยหลัง ทำ",
+ d:"เคลื่อนที่ถอยหลังโดยยังคงหันหน้าเข้าหาผู้รับการเคารพหรือทิศทางเดิม",
+ s:[["ก้าวเท้าซ้าย","ก้าวเท้าซ้ายออกไปข้างหลังในลักษณะขาซ้ายเหยียดตึง ยกมือซ้ายขึ้นที่แนวหัวเข็มขัด ฝ่ามือหันเข้าหาลำตัวห่างประมาณหนึ่งฝ่ามือ สะบัดแขนขวาไปข้างหลังเฉียงไปทางขวาจนแขนเหยียดตึง วางปลายเท้าซ้ายลงจดพื้นแล้วลดส้นเท้าลงยืนกับพื้น"],
+    ["ก้าวเท้าขวา","ก้าวเท้าขวามาข้างหลังผ่านเท้าซ้ายไปประมาณ 30 เซนติเมตร วางปลายเท้าขวาลงจดพื้น พร้อมเปลี่ยนมือขวามาไว้ที่หน้าหัวเข็มขัดในลักษณะเดียวกับมือซ้าย"],
+    ["ก้าวต่อเนื่อง","ปฏิบัติสลับเท้าไปทางข้างหลังเช่นนี้ต่อเนื่องกัน"]],
+ w:"ระยะก้าวประมาณ 30 ซม. ลำตัวต้องตั้งตรง ห้ามก้มมองด้านหลัง"},
+{id:15,n:"ท่าวันทยหัตถ์",c:"hon",cmd:"วันทยหัตถ์ / ตรงหน้า, วันทยหัตถ์",k:"คำบอกรวด / คำบอกผสม",say:"ตรงหน้า วันทยหัตถ์",
+ d:"ท่าแสดงความเคารพด้วยมือขวาขณะสวมหมวกมีกระบัง",
+ s:[["ยกมือ","ยกมือขวาขึ้นมาอย่างรวดเร็วและแข็งแรง งอแขนท่อนล่างเข้าหาลำตัว ฝ่ามือเหยียดตรงไปตามแนวแขนท่อนล่าง"],
+    ["ตำแหน่งมือ","ปลายนิ้วชี้ไปแตะขอบล่างของกระบังหมวกในแนวหางคิ้ว นิ้วมือเหยียดตรงเรียงชิดติดกัน ข้อมือไม่หัก"],
+    ["มุมฝ่ามือ–ข้อศอก","เปิดฝ่ามือขึ้นประมาณ 30 องศา ศอกขวาเปิดขนานกับพื้น ส่วนต่างๆ ของร่างกายอยู่ในลักษณะท่าตรง"],
+    ["ยกอก–สะบัดหน้า","ปฏิบัติในท่ายกอก และสะบัดหน้าไปยังทิศทางผู้รับการเคารพ"]],
+ w:"คำบอกรวดใช้ว่า “วันทยหัตถ์” ส่วนคำบอกผสมใช้ว่า “ตรงหน้า (ทางขวา/ทางซ้าย), วันทยหัตถ์”"},
+{id:16,n:"ท่านั่งคุกเข่าวันทยหัตถ์",c:"hon",cmd:"นั่งคุกเข่าวันทยหัตถ์, ทำ",k:"คำบอกเป็นคำๆ",say:"นั่งคุกเข่าวันทยหัตถ์ ทำ",
+ d:"ท่าพระราชทานสำหรับการถวายความปลอดภัยและถวายพระเกียรติในระยะประชิด ปฏิบัติ 3 จังหวะ",
+ s:[["จังหวะหนึ่ง","ดึงเท้าซ้ายไปด้านหลังเล็กน้อยโดยไม่เสียลักษณะท่าทาง ส้นเท้าซ้ายเปิด มือซ้ายแตะอยู่ที่ตะเข็บกางเกง มือขวาปฏิบัติท่าวันทยหัตถ์ สายตามองตรงไปด้านหน้า"],
+    ["จังหวะสอง","ดึงเท้าซ้ายไปด้านหลังอีกเล็กน้อย แล้วคุกเข่าซ้ายลง ให้ขาขวาท่อนบนและท่อนล่างตั้งฉากกัน"],
+    ["จังหวะสาม","สะบัดหน้าไปในทิศทางที่พระมหากษัตริย์หรือพระบรมวงศานุวงศ์เสด็จฯ"]],
+ w:"คำสั่งแบบรวดเร็วใช้ว่า “อึ๊บอึ๊บ” — มือขวาต้องคงท่าวันทยหัตถ์ตลอดทุกจังหวะ"},
+{id:17,n:"ท่าเลิกนั่งคุกเข่าวันทยหัตถ์",c:"hon",cmd:"เลิกนั่งคุกเข่าวันทยหัตถ์, ทำ",k:"คำบอกเป็นคำๆ",say:"เลิกนั่งคุกเข่าวันทยหัตถ์ ทำ",
+ d:"การกลับสู่ท่ายืนวันทยหัตถ์จากท่านั่งคุกเข่า ปฏิบัติ 2 จังหวะ",
+ s:[["จังหวะหนึ่ง","ลุกขึ้นยืนโดยไม่เสียลักษณะท่าทาง ขาซ้ายเหยียดตึง ส้นเท้าซ้ายเปิด"],
+    ["จังหวะสอง","นำเท้าซ้ายมาชิดส้นเท้าขวา กลับมาอยู่ในลักษณะท่าวันทยหัตถ์ จากนั้นปฏิบัติท่ายกอก"]],
+ w:"คำสั่งแบบรวดเร็วใช้ว่า “เลิก, อึ๊บอึ๊บ”"},
+{id:18,n:"ท่าแลขวา, แลซ้าย",c:"hon",cmd:"แลขวา (แลซ้าย) - ทำ",k:"คำบอกแบ่ง",say:"แลขวา ทำ",
+ d:"สะบัดหน้าไปทางขวาหรือซ้ายเพื่อแสดงความเคารพขณะอยู่ในแถว",
+ s:[["สะบัดหน้า","สะบัดหน้าไปทางขวาหรือซ้ายประมาณ 45 องศา อย่างแข็งแรง"],
+    ["ลักษณะใบหน้า","ใบหน้าตั้งตรง สายตามองตรงไปด้านหน้าในแนวระดับ"],
+    ["ลำตัว","ส่วนต่างๆ ของร่างกายคงอยู่ในลักษณะท่าตรง"],
+    ["ต่อเนื่อง","ปฏิบัติในท่ายกอก และสะบัดหน้าไปยังทิศทางผู้รับการเคารพ"]],
+ w:"ห้ามเอียงคอหรือก้มหน้า มุมสะบัดต้องได้ประมาณ 45 องศา เท่ากันทั้งแถว"},
+{id:19,n:"ท่าถอดหมวก",c:"hon",cmd:"ถอดหมวก",k:"คำบอกรวด",say:"ถอดหมวก",
+ d:"ปฏิบัติเป็น 3 ตอน ใช้ในพิธีการและเมื่อเข้าที่กำบัง",
+ s:[["ตอนที่หนึ่ง — เตรียมมือ","ยกแขนซ้ายท่อนล่างขึ้นมาข้างหน้าลำตัว งอข้อศอก พลิกหงายฝ่ามือขึ้น นิ้วทั้งสี่เหยียดตึง นิ้วหัวแม่มือตั้งขึ้นข้างบนตั้งฉากกับฝ่ามือ แขนซ้ายท่อนล่างขนานกับพื้น แขนซ้ายท่อนบนแนบชิดติดลำตัว พร้อมกับยกมือขวาขึ้นจับที่กระบังหมวก นิ้วทั้งสี่ทาบไปกับกระบังหมวกด้านบน นิ้วหัวแม่มืออยู่ด้านล่าง ข้อศอกขวาเปิด"],
+    ["ตอนที่สอง — ยกหมวกลง","ใช้มือขวายกหมวกออกจากศีรษะมาวางครอบที่นิ้วหัวแม่มือซ้าย หันหน้าหมวกไปทางขวาของลำตัว ขอบกระบังหมวกอยู่แนวโคนนิ้วมือซ้าย มือขวายังจับที่กระบังหมวก ข้อมือขวาไม่หัก"],
+    ["ตอนที่สาม — จบท่า","ลดมือขวาลงอยู่ในลักษณะท่าตรงอย่างรวดเร็วและแข็งแรง พร้อมกับจับขอบหมวกด้วยมือซ้ายในลักษณะกำมือ จากนั้นปฏิบัติท่ายกอก"]],
+ w:"ตำแหน่งหมวกต้องอยู่แนวเดียวกันทั้งแถว หน้าหมวกหันไปทางขวาของลำตัวเสมอ"},
+{id:20,n:"ท่าสวมหมวก",c:"hon",cmd:"สวมหมวก",k:"คำบอกรวด",say:"สวมหมวก",
+ d:"ปฏิบัติเป็น 3 ตอน ต่อเนื่องจากท่าถอดหมวก",
+ s:[["ตอนที่หนึ่ง — จับกระบังหมวก","ใช้มือขวาตบจับที่กระบังหมวก นิ้วทั้งสี่เรียงชิดติดกันอยู่ด้านบน นิ้วหัวแม่มืออยู่ด้านล่าง ข้อมือขวาไม่หัก แขนขวาท่อนล่างขนานกับพื้น พร้อมเหยียดนิ้วมือทั้งสี่ของมือซ้ายออกไปในลักษณะนิ้วเรียงชิดติดกันขนานกับพื้น"],
+    ["ตอนที่สอง — สวมหมวก","ใช้มือทั้งสองพลิกหงายหมวก พร้อมกับนำหมวกขึ้นสวมบนศีรษะ หันหน้าหมวกไปข้างหน้า นิ้วมือทั้งสี่ของมือทั้งสองข้างทาบไปกับกระบังหมวกด้านบน ปลายนิ้วกลางชนกัน นิ้วหัวแม่มือทั้งสองอยู่ด้านล่างของกระบังหมวก"],
+    ["ตอนที่สาม — จบท่า","ลดมือทั้งสองลงมาอยู่ในลักษณะท่าตรงอย่างรวดเร็วและแข็งแรง จากนั้นปฏิบัติท่ายกอก"]],
+ w:"ปลายนิ้วกลางทั้งสองข้างต้องชนกันพอดีกึ่งกลางกระบังหมวก หมวกจึงจะตรงแนว"},
+{id:21,n:"ท่าวิ่งและเวลาเดิน",c:"step",cmd:"วิ่ง, หน้า - วิ่ง",k:"คำบอกผสม",say:"วิ่ง หน้า วิ่ง",
+ d:"การเคลื่อนที่ด้วยการวิ่งหรือการเดินตามระเบียบแบบแผน",
+ s:[["การปฏิบัติ","เมื่อได้ยินคำบอกผสม ให้ปฏิบัติด้วยความพร้อมเพรียง แขนแกว่งตามระยะก้าวที่กำหนด"]],
+ w:"รักษาแถวให้ตรงและเว้นระยะห่างให้สม่ำเสมอ"}
+];
+
+/* ท่าอาวุธครบถ้วนตามคู่มือ พ.ศ.2560 */
+const WEAPONS = [
+  {id:1, n:"ท่าเรียบอาวุธ", cmd:"เรียบ - อาวุธ", k:"คำบอกแบ่ง", say:"เรียบ อาวุธ", d:"ท่าพื้นฐานของบุคคลท่าอาวุธ (ปืนเล็กยาว) ในลักษณะตั้งปืนตรงข้างเท้าขวา", s:[["การจับปืน","มือขวาจับท่อนบนของฝาครอบลำกล้อง ให้ร่องนิ้วกลางโอบรอบลำกล้อง แขนขวาเหยียดตึงเล็กน้อย"],["ตำแหน่งพานท้ายปืน","พานท้ายปืนวางแนบชิดติดกับด้านนอกของเท้าขวา ส้นพานท้ายเสมอกับส้นเท้าขวา"],["ลำตัว","ลำตัวตั้งตรง อกผายไหล่ผึ่ง อยู่ในลักษณะท่าตรงอย่างเคร่งครัด"]], w:"ระวังอย่าให้พานท้ายปืนล้ำมาด้านหน้าหรือเอียงออกนอกเท้าขวา"},
+  {id:2, n:"ท่ายกปืนและท่าปืนลง", cmd:"ยก - ปืน / ปืน - ลง", k:"คำบอกแบ่ง", say:"ยกปืน", d:"การเปลี่ยนจากท่าเรียบอาวุธมาสู่ท่ายกปืนเพื่อเตรียมปฏิบัติท่าอื่น", s:[["จังหวะหนึ่ง","ใช้มือซ้ายยกปืนขึ้นมาด้านหน้าลำตัว ตั้งตรง ห่างจากลำตัวประมาณหนึ่งฝ่ามือ มือขวาประคองคอพานท้าย"],["จังหวะสอง","จัดมือและอาวุธให้อยู่ในตำแหน่งที่มั่นคงพร้อมปฏิบัติท่าต่อไป"]], w:"การยกปืนต้องใช้ความแข็งแรงและพร้อมเพรียง"},
+  {id:3, n:"ท่าวันทยาวุธ", cmd:"วันทย - วุธ", k:"คำบอกแบ่ง", say:"วันทย วุธ", d:"ท่าแสดงความเคารพสูงสุดด้วยอาวุธประจำกาย ปฏิบัติ 2 จังหวะ", s:[["จังหวะหนึ่ง","ใช้มือขวายกปืนขึ้นมาอยู่กึ่งกลางลำตัว ตั้งตรง ห่างจากหน้าอกประมาณหนึ่งคืบ มือซ้ายตบจับที่ฝาครอบลำกล้อง แขนซ้ายท่อนล่างขนานกับพื้น ศอกซ้ายแนบลำตัว"],["จังหวะสอง","เลื่อนมือขวาลงมาจับที่คอพานท้าย นิ้วหัวแม่มืออยู่ด้านหลัง นิ้วอื่นๆ โอบรอบคอพานท้าย แขนขวาท่อนล่างขนานกับพื้น"]], w:"ศอกซ้ายต้องขนานกับพื้นและแนบลำตัว ไม่กางออก"},
+  {id:4, n:"ท่าเรียบอาวุธจากวันทยาวุธ", cmd:"เรียบ - อาวุธ", k:"คำบอกแบ่ง", say:"เรียบ อาวุธ", d:"การกลับสู่ท่าเรียบอาวุธจากท่าวันทยาวุธ ปฏิบัติ 2 จังหวะ", s:[["จังหวะหนึ่ง","ส่งปืนกลับลงมาด้านข้างขวาด้วยมือขวา มือซ้ายยังประคองช่วยประเปียดปืน"],["จังหวะสอง","สะบัดมือซ้ายกลับมาแนบชิดติดตะเข็บกางเกงอย่างแข็งแรง พร้อมกลับสู่ท่าเรียบอาวุธ"]], w:"จังหวะสะบัดมือซ้ายกลับต้องรวดเร็วและเสียงดังพร้อมกัน"},
+  {id:5, n:"ท่าเฉียงอาวุธ", cmd:"เฉียง, อาวุธ", k:"คำบอกเป็นคำๆ", say:"เฉียง อาวุธ", d:"ท่าถืออาวุธในลักษณะเฉียงผ่านลำตัว แบ่งปฏิบัติเป็น 2 ตอน", s:[["ตอนที่หนึ่ง","ยกปืนเฉียงผ่านหน้าลำตัว มือขวากำคอปืน มือซ้ายตบจับฝาครอบลำกล้อง"],["ตอนที่สอง","มือขวากำคอปืนในลักษณะคว่ำฝ่ามือ ปืนเฉียงทำมุมได้ระดับตามแบบฝึก"]], w:"มุมเฉียงต้องได้ระดับเดียวกันทั้งแถว"},
+  {id:6, n:"ท่าเตรียมใช้อาวุธ", cmd:"เตรียมใช้อาวุธ", k:"คำบอกรวด", say:"เตรียมใช้อาวุธ", d:"ท่าเตรียมความพร้อมของอาวุธ แบ่งปฏิบัติเป็น 2 ตอน", s:[["ตอนที่หนึ่ง","ยกปืนเฉียงผ่านหน้าลำตัว มือซ้ายตบจับฝาครอบลำกล้อง"],["ตอนที่สอง","มือขวาสอดไปตบจับสันพานท้ายปืน เตรียมพร้อมปฏิบัติการรบหรือตรวจอาวุธ"]], w:"ความคล่องตัวและความพร้อมเพรียงเป็นสิ่งสำคัญ"},
+  {id:7, n:"ท่าคอนอาวุธ", cmd:"คอน - อาวุธ", k:"คำบอกแบ่ง", say:"คอน อาวุธ", d:"ท่าคอนอาวุธบนไหล่ขวาเพื่อการเดินสวนสนามหรือเคลื่อนย้ายกำลังพล", s:[["จังหวะหนึ่ง","ยกปืนขึ้นตั้งตรงด้วยมือขวา มือซ้ายช่วยประคอง"],["จังหวะสอง","นำพานท้ายปืนขึ้นมาวางพาดบนไหล่ขวา มือขวาจับที่โคนพานท้าย แขนขวาท่อนล่างตั้งฉาก ปืนตั้งตรงขนานกับลำตัว"]], w:"ทรงตัวให้ดี ปืนต้องตั้งตรงไม่เอียงไปด้านหน้าหรือด้านหลัง"},
+  {id:8, n:"ท่าแบกอาวุธ", cmd:"แบก - อาวุธ", k:"คำบอกแบ่ง", say:"แบก อาวุธ", d:"ท่าแบกอาวุธไว้บนไหล่ขวาสำหรับการเคลื่อนย้ายระยะไกล", s:[["จังหวะหนึ่ง","ยกและหมุนปืนด้วยมือขวาและมือซ้าย นำมาวางพาดบนไหล่ขวาในลักษณะนอนราบหรือเอียงตามคู่มือระเบียบปฏิบัติ"],["จังหวะสอง","มือขวาจับที่โคนพานท้าย แขนขวาเหยียดเกือบตึง มือซ้ายลดลงแนบข้างลำตัว"]], w:"ระวังเรื่องความสมดุลและการแบกให้ถูกองศาตามแบบฝึกทหารใหม่"},
+  {id:9, n:"ท่าสะพายอาวุธ", cmd:"สะพาย, อาวุธ", k:"คำบอกเป็นคำๆ", say:"สะพาย อาวุธ", d:"การสะพายปืนไว้ที่ไหล่ แบ่งปฏิบัติเป็น 3 ตอน", s:[["ตอนที่หนึ่ง","เตรียมปืนขึ้นมาด้านหน้า"],["ตอนที่สอง","สอดแขนขวาเข้าในสายสะพายและนำปืนขึ้นพาดไหล่"],["ตอนที่สาม","เลื่อนมือขวาขึ้นจับสายสะพายจัดความเรียบร้อย"]], w:"สายสะพายต้องไม่บิดและอยู่ในแนวที่ถูกต้อง"},
+  {id:10, n:"ท่าสะพายขวาง", cmd:"สะพายขวาง", k:"คำบอกรวด", say:"สะพายขวาง", d:"ท่าสะพายปืนเฉียงพาดลำตัว แบ่งปฏิบัติเป็น 3 ตอน", s:[["ตอนที่หนึ่ง","โยนปืนขึ้นและมือซ้ายจับสายสะพาย"],["ตอนที่สอง","สวมสายสะพายผ่านศีรษะและจัดปืนไว้ที่ไหล่ซ้ายขวางลำตัว"],["ตอนที่สาม","ลดมือลงในลักษณะท่าตรงอย่างแข็งแรง"]], w:"เหมาะสำหรับการเคลื่อนที่เร็วหรือปฏิบัติภารกิจพิเศษ"},
+  {id:11, n:"ท่ารับตรวจ / เลิกรับตรวจ", cmd:"รับตรวจ / เลิกรับตรวจ", k:"คำบอกรวด", say:"รับตรวจ", d:"ท่าเตรียมรับการตรวจสภาพอาวุธ แบ่งเป็น 5 ตอน", s:[["ตอนที่หนึ่งถึงสอง","ปฏิบัติท่าเตรียมใช้อาวุธและยกส้นเท้าขวาพร้อมดึงปืนมาวางที่ต้นขาขวา"],["ตอนที่สามถึงห้า","ดึงคันรั้งลูกเลื่อนเพื่อตรวจรังเพลิง ผลักปืนออกนอกลำตัว และลดส้นเท้าขวาลงท่าเรียบอาวุธ"]], w:"ห้ามมองต่ำ ต้องเช็คความปลอดภัยรังเพลิงให้เรียบร้อย"},
+  {id:12, n:"ท่าตรวจอาวุธ", cmd:"ตรวจ - อาวุธ", k:"คำบอกแบ่ง", say:"ตรวจ อาวุธ", d:"ท่าสำหรับเปิดลูกเลื่อนและตรวจความสะอาดความปลอดภัยของอาวุธ", s:[["การปฏิบัติ","ปฏิบัติจากท่าเตรียมใช้อาวุธ ดึงคันรั้งลูกเลื่อนถอยหลังสุด เพื่อให้ผู้ตรวจมองเห็นรังเพลิงว่างเปล่า สายตามองตรง"]], w:"ต้องแน่ใจว่าไม่มีกระสุนอยู่ในรังเพลิงก่อนส่งตรวจ"},
+  {id:13, n:"ท่าติดดาบ / ปลดดาบ", cmd:"ติดดาบ / ปลดดาบ", k:"คำบอกรวด", say:"ติดดาบ", d:"การติดตั้งดาบปลายปืนเข้ากับปากลำกล้องปืน หรือถอดเก็บ", s:[["การติดดาบ","มือซ้ายจับฝาครอบลำกล้อง มือขวาดึงดาบออกจากฝัก สวมเข้ากับแท่นยันใต้ปากลำกล้องจนดังคลิก"],["การปลดดาบ","กดปุ่มล็อกที่โคนดาบ ดึงดาบออก เก็บเข้าฝักอย่างเป็นระเบียบ"]], w:"ต้องปฏิบัติด้วยความระมัดระวังเรื่องความคมของดาบ"},
+  {id:14, n:"ท่าจัดสายสะพาย / ปรับสายสะพาย", cmd:"จัดสายสะพาย / ปรับสายสะพาย", k:"คำบอกรวด", say:"จัดสายสะพาย", d:"การปรับแต่งความตึงหย่อนของสายสะพาย แบ่งเป็น 5 ตอน", s:[["ตอนที่หนึ่งถึงสอง","เตรียมปืนและจัดปืนที่ต้นขาขวา"],["ตอนที่สามถึงห้า","ปรับสายสะพายให้ตึง ดึงปืนเข้าหาลำตัว และลดปืนลงท่าเรียบอาวุธ"]], w:"ปรับให้พอดีกับการสะพายของกำลังพลแต่ละนาย"},
+  {id:15, n:"ท่าบรรจุ / เลิกบรรจุ", cmd:"บรรจุ / เลิกบรรจุ", k:"คำบอกรวด", say:"บรรจุ", d:"ขั้นตอนการบรรจุกระสุนเข้าสู่รังเพลิงตามคำสั่งยุทธวิธี", s:[["การบรรจุ","หันปากกระบอกปืนไปในทิศทางปลอดภัย ดึงลูกเลื่อน บรรจุกระสุน ปิดลูกเลื่อน และเข้าห้ามไก"],["การเลิกบรรจุ","นำกระสุนออกจากรังเพลิง ตรวจสอบความปลอดภัย ปิดลูกเลื่อน และลดนกปืน"]], w:"ความปลอดภัยต้องมาเป็นอันดับหนึ่ง ห้ามหันปากกระบอกปืนเข้าหาผู้อื่น"},
+  {id:16, n:"ท่าหมอบและท่าลุก", cmd:"หมอบลง / ลุกขึ้น", k:"คำบอกรวด", say:"หมอบลง", d:"ท่าทางยุทธวิธีในการหลบกระสุนหรือเข้าที่กำบังอย่างรวดเร็ว", s:[["ท่าหมอบ","ก้าวเท้าไปด้านหลัง ย่อตัวลง ใช้มือและเข่ารองรับ ลำตัวราบไปกับพื้น ปืนวางข้างกายหรือกระชับมั่น"],["ท่าลุก","ดึงตัวและขาขึ้นอย่างรวดเร็ว กลับสู่ท่ายืนเตรียมพร้อมปฏิบัติการต่อ"]], w:"ต้องใช้ความคล่องตัวสูง ระวังสิ่งสกปรกอุดตันปากลำกล้อง"},
+  {id:17, n:"ท่ารวมอาวุธ / ขยายอาวุธ", cmd:"รวมอาวุธ / ขยายอาวุธ", k:"คำบอกรวด", say:"รวมอาวุธ", d:"การนำปืนหลายกระบอกมาพิงรวมกันเป็นกระโจมในเวลาพักกอง", s:[["การรวมอาวุธ","กำลังพลนำปืนมาขัดประสานพานท้ายและลำกล้องเข้าด้วยกันเป็นกระโจมตั้งบนพื้นสนาม"],["การขยายอาวุธ","แยกปืนออกจากกระโจมกลับคืนสู่กำลังพลแต่ละนายเมื่อจะทำการฝึกต่อ"]], w:"จัดตั้งกระโจมปืนให้มั่นคง ป้องกันปืนล้มกระแทกพื้นชำรุด"},
+  {id:18, n:"ท่าเปลี่ยนยาม", cmd:"เปลี่ยนยาม", k:"คำบอกรวด", say:"เปลี่ยนยาม", d:"ระเบียบปฏิบัติและการเคลื่อนย้ายเมื่อมีการผลัดเปลี่ยนกำลังพลหน้าที่เวรยาม", s:[["ตอนที่หนึ่งถึงสาม","ปฏิบัติท่ากึ่งขวาหันและคอนอาวุธ ก้าวเท้าขวาและหมุนตัว 180 องศา และชิดเท้าทำท่าเรียบอาวุธเปลี่ยนหน้าที่"]], w:"ความพร้อมเพรียงและสง่างามตามแบบฉบับทหารมหาดเล็ก"},
+  {id:19, n:"ท่าอาวุธพระราชทานบรรจุ 12 ขั้นตอน", cmd:"ตามระเบียบพระราชทาน", k:"คำบอกพิเศษ", say:"อาวุธพระราชทานบรรจุ", d:"กระบวนการปฏิบัติอาวุธพระราชทาน 12 ขั้นตอนตามระเบียบเฉพาะของหน่วย", s:[["การปฏิบัติ","ปฏิบัติตามลำดับขั้นตอน 12 จังหวะอย่างเคร่งครัด เน้นความพร้อมเพรียงและเสียงอัดส้นเท้าที่หนักแน่น"]], w:"ต้องซักซ้อมความเข้าใจให้ตรงกันทั้งหน่วยฝึก"},
+  {id:20, n:"ท่าแทงใกล้ / แทงไกล", cmd:"แทงใกล้ / แทงไกล", k:"คำบอกรวด", say:"แทงใกล้", d:"ท่ารบประชิดด้วยดาบปลายปืนในระยะประชิดและระยะกลาง", s:[["การแทงใกล้","พุ่งปลายดาบไปข้างหน้าด้วยความรวดเร็วโดยใช้แรงส่งจากลำตัวและเท้า"],["การแทงไกล","ก้าวเท้าพุ่งตัวออกไปพร้อมเหยียดแขนสุดแรงเพื่อแทงเป้าหมายในระยะไกลขึ้น"]], w:"ระวังอุบัติเหตุระหว่างฝึกซ้อมร่วมกับเพื่อนร่วมแถว"},
+  {id:21, n:"ท่าตีด้วยพานท้ายตั้ง / พานท้ายราบ", cmd:"ตีด้วยพานท้ายตั้ง / พานท้ายราบ", k:"คำบอกรวด", say:"ตีด้วยพานท้ายตั้ง", d:"ท่าป้องกันตัวและจู่โจมด้วยพานท้ายปืน", s:[["พานท้ายตั้ง","ยกปืนเหวี่ยงกระแทกพานท้ายในแนวตั้งลงสู่เป้าหมาย"],["พานท้ายราบ","เหวี่ยงปืนฟาดด้วยพานท้ายในแนวราบเพื่อสกัดหรือจู่โจมคู่ต่อสู้"]], w:"จับปืนให้มั่นคงป้องกันปืนหลุดมือ"},
+  {id:22, n:"ท่ากายบริหารประกอบอาวุธ", cmd:"บริหารประกอบอาวุธ - เริ่ม", k:"คำบอกแบ่ง", say:"บริหารประกอบอาวุธ เริ่ม", d:"ท่าออกกำลังกายและสร้างความคุ้นเคยกับอาวุธประจำกาย", s:[["ท่าประกอบ","เช่น ท่าขวางอาวุธหน้า, กระโดดแยกเท้าเหวี่ยงปืนเหนือศีรษะ, เหยียดตัวและดันพื้นประกอบอาวุธ"]], w:"ช่วยสร้างความแข็งแรงและความคล่องแคล่วในการใช้อาวุธ"},
+  {id:23, n:"ท่ายิงต่างๆ (ยืน/นั่ง/นอน)", cmd:"ยืนยิง / นั่งยิง / นอนยิง", k:"คำบอกรวด", say:"เตรียมตัวยิง", d:"ท่าทางการใช้อาวุธในสถานการณ์ทำการยิงเป้าหมาย", s:[["การปฏิบัติ","แยกประเภทเป็น ท่ายืนยิง, ท่านั่งสูงยิง, ท่านั่งราบยิง, ท่านั่งคุกเข่ายิง และท่านอนยิง จัดแนวเล็งให้ถูกต้อง"]], w:"ตรวจสอบการห้ามไกและความปลอดภัยทุกครั้งก่อนและหลังทำการยิง"}
+];
+
+/* ============ STATE ============ */
+let done = JSON.parse(localStorage.getItem('mtb43_done_all')||'[]');
+let filter = 'all', search = '';
+
+function go(v){
+  document.querySelectorAll('.view').forEach(e=>e.classList.remove('on'));
+  document.getElementById('v-'+v).classList.add('on');
+  document.querySelectorAll('.dlink,#bnav button').forEach(e=>e.classList.toggle('on',e.dataset.v===v));
+  toggleDrawer(false); window.scrollTo({top:0,behavior:'smooth'});
+  if(v==='quiz') startQuiz();
+}
+function toggleDrawer(s){
+  document.getElementById('drawer').classList.toggle('show',s);
+  document.getElementById('scrim').classList.toggle('show',s);
+  document.body.style.overflow=s?'hidden':'';
+}
+function toggleSearch(){
+  const b=document.getElementById('searchbox');
+  b.classList.toggle('show'); document.getElementById('sbtn').classList.toggle('on');
+  if(b.classList.contains('show'))document.getElementById('q').focus();
+}
+function doSearch(v){
+  search=v.trim(); 
+  if(v){ go('moves'); }
+  render();
+}
+
+function chipsInit(){
+  const c=[['all','ทั้งหมด'],['still','ท่าอยู่กับที่'],['turn','ท่าหัน'],['step','ท่าก้าว'],['hon','ท่าเคารพ'],['todo','ยังไม่ผ่าน']];
+  document.getElementById('chips').innerHTML=c.map(x=>
+    `<button class="chip ${x[0]==='all'?'on':''}" data-f="${x[0]}" onclick="setF('${x[0]}')">${x[1]}</button>`).join('');
+}
+function setF(f){filter=f;document.querySelectorAll('.chip').forEach(e=>e.classList.toggle('on',e.dataset.f===f));render();}
+
+function cardHTML(m, type='move'){
+  const idStr = type + '-' + m.id;
+  const dn = done.includes(idStr);
+  const tagClass = type==='move' ? ('t-'+m.c) : 't-weapon';
+  const tagText = type==='move' ? CAT[m.c] : 'ท่าอาวุธ';
+  return `<div class="card" onclick="openSheet(${m.id}, '${type}')">
+    <div class="no">${String(m.id).padStart(2,'0')}</div>
+    <h4>${m.n}</h4>
+    <span class="cmd">${m.cmd}</span>
+    <p>${m.d}</p>
+    <div class="foot"><span class="tag ${tagClass}">${tagText}</span>
+    <span class="chk ${dn?'done':''}">${dn?'✓':''}</span></div></div>`;
+}
+
+function render(){
+  // Move grid
+  let list=M.filter(m=>{
+    const okF = filter==='all'||filter===m.c||(filter==='todo'&&!done.includes('move-'+m.id));
+    const s=search.toLowerCase();
+    const okS = !s|| (m.n+m.cmd+m.d+m.k).toLowerCase().includes(s);
+    return okF&&okS;
+  });
+  document.getElementById('moveGrid').innerHTML=list.map(m=>cardHTML(m, 'move')).join('');
+  document.getElementById('noRes').style.display=list.length?'none':'block';
+
+  // Weapon grid
+  let wList = WEAPONS.filter(w=>{
+    const s=search.toLowerCase();
+    return !s || (w.n+w.cmd+w.d).toLowerCase().includes(s);
+  });
+  document.getElementById('weaponGrid').innerHTML=wList.map(w=>cardHTML(w, 'weapon')).join('');
+
+  // Stats
+  const totalItems = M.length + WEAPONS.length;
+  const pct = Math.round(done.length/totalItems*100);
+  document.getElementById('sDone').textContent = done.length;
+  document.getElementById('sPct').textContent = pct+'%';
+  document.getElementById('topprog').style.width = pct+'%';
+}
+
+function openSheet(id, type='move'){
+  const item = type==='move' ? M.find(x=>x.id===id) : WEAPONS.find(x=>x.id===id);
+  const idStr = type + '-' + id;
+  document.getElementById('shTitle').textContent = `${type==='move'?'มือเปล่า':'อาวุธ'} ${String(item.id).padStart(2,'0')} · ${item.n}`;
+  const dn = done.includes(idStr);
+  document.getElementById('shBody').innerHTML=`
+    <div class="cmdbox">
+      <small>คำบอก</small>
+      <b>${item.cmd}</b>
+      <div class="kind">ชนิด : ${item.k||'คำบอกแบ่ง/รวด'}</div>
+      <button class="speak" onclick="speak('${item.say||item.n}')">🔊 ฟังคำบอก</button>
+    </div>
+    <p style="color:var(--txt2);font-size:.88rem;margin-bottom:16px">${item.d}</p>
+    <div class="sec-t" style="margin:6px 0 14px"><b>▸</b><h2 style="font-size:1rem">ลำดับการปฏิบัติ</h2></div>
+    <ol class="steps">${item.s.map(s=>`<li><b>${s[0]}</b><span>${s[1]}</span></li>`).join('')}</ol>
+    <div class="note"><b>⚑ ข้อควรระวัง</b>${item.w}</div>
+    <button class="markbtn ${dn?'done':''}" id="mk" onclick="mark('${idStr}')">${dn?'✓ ฝึกผ่านแล้ว':'บันทึกว่าฝึกผ่านแล้ว'}</button>`;
+  document.getElementById('sheet').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+
+function closeSheet(){document.getElementById('sheet').classList.remove('show');document.body.style.overflow='';}
+
+function mark(idStr){
+  if(done.includes(idStr)) done = done.filter(x=>x!==idStr);
+  else done.push(idStr);
+  localStorage.setItem('mtb43_done_all', JSON.stringify(done));
+  const b = document.getElementById('mk'), dn = done.includes(idStr);
+  if(b){ b.classList.toggle('done',dn); b.textContent = dn?'✓ ฝึกผ่านแล้ว':'บันทึกว่าฝึกผ่านแล้ว'; }
+  render();
+}
+
+function resetAll(){
+  if(confirm('ยืนยันการล้างความก้าวหน้าทั้งหมด?')){ done=[]; localStorage.removeItem('mtb43_done_all'); render(); }
+}
+
+function speak(t){
+  if(!('speechSynthesis' in window)){alert('อุปกรณ์นี้ไม่รองรับการอ่านออกเสียง');return;}
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t);
+  u.lang='th-TH'; u.rate=.82; u.pitch=.85;
+  const v=speechSynthesis.getVoices().find(x=>x.lang.startsWith('th'));
+  if(v)u.voice=v;
+  speechSynthesis.speak(u);
+}
+
+/* ============ QUIZ ============ */
+const QB=[
+ ["ท่าตรง ปลายเท้าแยกทำมุมประมาณกี่องศา",["30 องศา","45 องศา","60 องศา","90 องศา"],1],
+ ["คำบอก “ตามระเบียบ, พัก” เป็นคำบอกชนิดใด",["คำบอกแบ่ง","คำบอกรวด","คำบอกเป็นคำๆ","คำบอกผสม"],2],
+ ["ท่ายกอก เดิมมีชื่อเรียกว่าอะไร",["ท่าแก้เขิน","ท่าผึ่งผาย","ท่าสง่า","ท่าเชิดหน้า"],0],
+ ["ท่าซ้ายหัน ใช้ส่วนใดเป็นจุดหมุน",["ปลายเท้าขวา","ส้นเท้าซ้าย","ส้นเท้าขวา","ปลายเท้าซ้าย"],1],
+ ["ท่าวันทยหัตถ์ ปลายนิ้วชี้แตะที่บริเวณใด",["ขมับ","ขอบล่างกระบังหมวกแนวหางคิ้ว","กลางหน้าผาก","ขอบบนกระบังหมวก"],1],
+ ["ท่าวันทยาวุธ จังหวะที่สอง มือขวาจับที่ตำแหน่งใด",["ปลอกลดแสง","ฝาครอบลำกล้อง","คอพานท้าย","โคนพานท้าย"],2],
+ ["ท่าสะพายขวาง แบ่งการปฏิบัติออกเป็นกี่ตอน",["2 ตอน","3 ตอน","4 ตอน","5 ตอน"],1],
+ ["การคัดกรองสุขภาพทหารใหม่ ควรตรวจสิ่งใดวันละ 2 เวลา",["ความดันโลหิต","สีปัสสาวะและวัดไข้","น้ำหนักตัว","อัตราการเต้นหัวใจ"],1],
+ ["เมื่อพบผู้ป่วยโรคลมร้อน (Heat Stroke) ควรปฏิบัติสิ่งแรกอย่างไร",["ให้ดื่มน้ำเกลือแร่ปริมาณมากทันที","ย้ายเข้าที่ร่มและลดอุณหภูมิร่างกายทันที","ปล่อยให้นอนพักตามลำพัง","ให้นอนหงายแล้วยกขาสูง"],1],
+ ["หากพบผู้ป่วยไม่รู้สึกตัวและไม่หายใจ ขั้นตอนแรกในการช่วยเหลือคืออะไร",["รีบหายาลดไข้","โทรแจ้งแพทย์และเริ่มทำ CPR ร่วมกับใช้ AED","ให้จิบน้ำอุ่น","รอให้เจ้าหน้าที่มาถึงโดยไม่ต้องทำอะไร"],1]
+];
+let qs=[],qi=0,sc=0,locked=false;
+
+function startQuiz(){
+  qs=[...QB].sort(()=>Math.random()-.5).slice(0,10); qi=0; sc=0; drawQ();
+}
+function drawQ(){
+  const a=document.getElementById('quizArea');
+  if(qi>=qs.length){
+    const p=Math.round(sc/qs.length*100);
+    const msg=p>=80?'ยอดเยี่ยม! มีความรู้ความเข้าใจดีเยี่ยม':p>=60?'ผ่านเกณฑ์ แต่ควรทบทวนเพิ่มเติม':'ควรกลับไปทบทวนเนื้อหาในคู่มือให้แม่นยำขึ้น';
+    a.innerHTML=`<div class="q-card result">
+      <div class="emblem rlogo"><span>มทบ.</span><span>๔๓</span></div>
+      <div class="score">${sc}/${qs.length}</div>
+      <p style="color:var(--gold2);font-size:1rem;margin:4px 0 6px">คิดเป็น ${p}%</p>
+      <p style="color:var(--txt2);font-size:.88rem;margin-bottom:20px">${msg}</p>
+      <button class="qbtn" onclick="startQuiz()">ทำแบบทดสอบใหม่</button>
+      <button class="qbtn" style="background:var(--card2);color:var(--txt);border:1px solid var(--line);margin-top:10px" onclick="go('home')">กลับหน้าหลัก</button>
+    </div>`; return;
+  }
+  const q=qs[qi]; locked=false;
+  a.innerHTML=`<div class="q-card">
+    <div class="q-meta"><span>ข้อ ${qi+1} / ${qs.length}</span><span>คะแนน ${sc}</span></div>
+    <div class="progwrap" style="border-radius:3px;margin-bottom:16px"><i style="width:${(qi/qs.length)*100}%"></i></div>
+    <div class="q-txt">${q[0]}</div>
+    ${q[1].map((o,i)=>`<button class="opt" onclick="ans(${i},${q[2]})">${['ก','ข','ค','ง'][i]}. ${o}</button>`).join('')}
+  </div>`;
+}
+function ans(i,c){
+  if(locked)return; locked=true;
+  const o=document.querySelectorAll('.opt');
+  o[c].classList.add('right');
+  if(i!==c) o[i].classList.add('wrong'); else sc++;
+  setTimeout(()=>{qi++;drawQ();},950);
+}
+
+chipsInit(); render();
+setTimeout(()=>document.getElementById('splash').classList.add('hide'),1400);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSheet();toggleDrawer(false);}});
+</script>
+</body>
+</html>
